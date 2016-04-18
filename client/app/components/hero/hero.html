@@ -1,0 +1,13 @@
+<div class="jumbotron" id="home-header">
+  <div class="container">
+    <app-greeting name="$ctrl.name"></app-greeting>
+
+    <p ng-transclude></p>
+    <p>
+      <a class="btn btn-primary  btn-lg" ng-click="$ctrl.changeName()" role="button">
+        Change Name &raquo;
+      </a>
+    </p>
+  </div>
+
+</div>
