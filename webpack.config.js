@@ -242,6 +242,14 @@ function getPlugins(env) {
       plugins.push(
         new webpack.optimize.CommonsChunkPlugin({ names: [ 'vendor', 'manifest' ] })
       );
+      // // create chunks for pages
+      // plugins.push(
+      //   new webpack.optimize.CommonsChunkPlugin({
+      //     names: [
+      //       './client/app/pages/about', './client/app/pages/home',
+      //     ],
+      //   })
+      // );
       plugins.push(new webpack.optimize.DedupePlugin());
       break;
 
