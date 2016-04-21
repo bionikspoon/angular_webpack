@@ -1,8 +1,8 @@
 import angular from 'angular';
 
 import navbar from '../components/navbar/navbar.module';
-import pageHome from '../pages/home/index.js';
-import pageAbout from '../pages/about/index.js';
+import pageHome from '../pages/home';
+import pageAbout from '../pages/about';
 
 import coreConfig from './core.config';
 import routeConfig from './route.config';

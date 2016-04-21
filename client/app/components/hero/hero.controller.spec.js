@@ -1,7 +1,7 @@
 /* eslint-env angular/mocks */
 
 import 'angular-mocks';
-import hero from './hero.module';
+import hero from './';
 // import HeroController from './hero.controller';
 
 describe('Controller: Home', () => {

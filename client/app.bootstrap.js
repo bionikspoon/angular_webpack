@@ -1,5 +1,5 @@
 import angular from 'angular';
-import app from './app/app.module';
+import app from './app';
 
 angular.element(document).ready(() => {
   angular.bootstrap(document, [ app.name ]);
