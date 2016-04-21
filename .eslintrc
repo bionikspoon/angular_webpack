@@ -3,7 +3,7 @@
     "browser": true,
     "es6": true
   },
-  "globals": { },
+  "globals": { "__PRODUCTION__": true },
   "extends": [ "airbnb/base", "angular" ],
   "parserOptions": { "sourceType": "module" },
   "rules": {

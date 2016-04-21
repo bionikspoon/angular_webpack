@@ -183,7 +183,7 @@ function getLoaders(env) {
       break;
 
     case PRODUCTION:
-      loaders.push({ test: /\.js$/, loader: 'ng-annotate', include: LOADER_INCLUDES });
+      loaders.unshift({ test: /\.js$/, loader: 'ng-annotate', include: LOADER_INCLUDES });
       loaders.push(_.merge(SASS_LOADER, {
         loader: ExtractTextPlugin.extract(''
           + 'css?minimize&sourceMap'
@@ -218,7 +218,10 @@ function getPlugins(env) {
     }),
 
     // new webpack.ProvidePlugin({ jQuery: 'jquery' }),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(env) }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(env),
+      __PRODUCTION__: IS_PRODUCTION,
+    }),
   ];
 
   switch (env) {
@@ -229,8 +232,9 @@ function getPlugins(env) {
       break;
 
     case PRODUCTION:
-
-      plugins.push(new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } }));
+      if (!DEBUG) {
+        plugins.push(new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } }));
+      }
       plugins.push(
         new ExtractTextPlugin(DEBUG ? 'main.css?[chunkhash]' : 'main.[chunkhash].css')
       );
