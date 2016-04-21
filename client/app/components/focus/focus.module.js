@@ -1,14 +1,12 @@
-const focus = {
-  templateUrl: require('./focus.html'),
-  transclude: true,
-  bindings: { title: '@' },
-};
+import angular from 'angular';
 
-const focusContainer = {
-  template: '<div class="container"><div class="row" ng-transclude></div></div>',
-  transclude: true,
-};
-
-angular.module('app.component.focus', [])
-       .component('appFocus', focus)
-       .component('appFocusContainer', focusContainer);
+export default angular.module('app.component.focus', [])
+  .component('appFocus', {
+    templateUrl: require('./focus.html'),
+    transclude: true,
+    bindings: { title: '@' },
+  })
+  .component('appFocusContainer', {
+    template: '<div class="container"><div class="row" ng-transclude></div></div>',
+    transclude: true,
+  });

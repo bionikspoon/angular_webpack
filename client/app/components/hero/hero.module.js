@@ -1,6 +1,14 @@
-const HeroController = require('./hero.controller');
-const hero = require('./hero.component.js');
+import angular from 'angular';
+import HeroController from './hero.controller';
 
-angular.module('app.component.hero', [ 'app.service.random-names', 'app.component.greetings' ])
-       .controller('HeroController', HeroController)
-       .component('appHero', hero);
+import randomNames from '../../services/randomNames/index.js';
+import greetings from '../greetings/index.js';
+
+export default angular
+  .module('app.component.hero', [ randomNames.name, greetings.name ])
+  .controller('HeroController', HeroController)
+  .component('appHero', {
+    templateUrl: require('./hero.html'),
+    controller: 'HeroController',
+    transclude: true,
+  });

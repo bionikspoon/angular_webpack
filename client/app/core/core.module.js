@@ -1,13 +1,16 @@
-const coreConfig = require('./core.config');
-const routeConfig = require('./route.config');
-const appCore = require('./core.component.js');
+import angular from 'angular';
 
-angular
-  .module('app.core', [
-    'ngAnimate', 'ngTouch', 'ui.router', 'app.component.navbar', 'app.page.home', 'app.page.about',
-  ])
+import navbar from '../components/navbar/navbar.module';
+import pageHome from '../pages/home/index.js';
+import pageAbout from '../pages/about/index.js';
+
+import coreConfig from './core.config';
+import routeConfig from './route.config';
+import appCore from './core.component';
+
+export default angular
+  .module('app.core', [ navbar.name, pageHome.name, pageAbout.name ])
   .value('$routerRootComponent', 'appCore')
   .config(coreConfig)
   .config(routeConfig)
   .component('appCore', appCore);
-

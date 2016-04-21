@@ -1,7 +1,8 @@
-const greeting = {
-  bindings: { name: '<' },
-  template: '<h1>Hello, {{$ctrl.name}}</h1>',
-};
+import angular from 'angular';
 
-angular.module('app.component.greetings', [])
-       .component('appGreeting', greeting);
+export default angular
+  .module('app.component.greetings', [])
+  .component('appGreeting', {
+    bindings: { name: '<' },
+    template: '<h1>Hello, {{$ctrl.name}}</h1>',
+  });

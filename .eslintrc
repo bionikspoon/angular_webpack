@@ -4,16 +4,15 @@
     "es6": true,
     "jasmine": true
   },
-  "globals": {
-    "angular": true,
-    "inject": true
-  },
-  "extends": "airbnb/base",
+  "globals": { },
+  "extends": [ "airbnb/base", "angular" ],
   "parserOptions": { "sourceType": "module" },
   "rules": {
-    "no-use-before-define": [ 0, { "functions": false } ],
+    "no-use-before-define": [ 2, { "functions": false } ],
     "array-bracket-spacing": [ 2, "always" ],
     "no-unused-vars": 1,
-    "max-len": [ 1, 120 ]
+    "max-len": [ 1, 120 ],
+    "angular/no-service-method": 0,
+    "angular/log": 1
   }
 }

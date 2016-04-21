@@ -1,4 +1,9 @@
-const modules = require.context('./', true, /\.(?:module|service)$/);
-modules.keys().map(modules);
+import angular from 'angular';
+import ngAnimate from 'angular-animate';
+import ngTouch from 'angular-touch';
+import uiRouter from 'angular-ui-router';
 
-angular.module('app', [ 'app.core' ]);
+import appCore from './core/core.module';
+
+export default angular
+  .module('app', [ ngAnimate, ngTouch, uiRouter, appCore.name ]);

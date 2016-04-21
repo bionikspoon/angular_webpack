@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   templateUrl: require('./core.html'),
   controller: CoreController,
   controllerAs: 'app',
