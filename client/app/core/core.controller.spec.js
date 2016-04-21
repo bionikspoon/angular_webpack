@@ -1,9 +1,9 @@
 /* eslint-env angular/mocks, jasmine */
 
 import 'angular-mocks';
-import appHero from './';
+import appCore from './';
 
-describe('Hero Controller', () => {
+describe('Core Controller', () => {
   let $ctrl;
   let $scope;
 
@@ -12,14 +12,14 @@ describe('Hero Controller', () => {
     let $rootScope;
 
     // eslint-disable-next-line angular/window-service
-    window.module(appHero.name);
+    window.module(appCore.name);
 
     inject((_$controller_, _$rootScope_) => {
       $controller = _$controller_;
       $rootScope = _$rootScope_;
       $scope = $rootScope.$new(true);
 
-      $ctrl = $controller('HeroController', { $scope });
+      $ctrl = $controller('CoreController', { $scope });
     });
   });
 
@@ -27,7 +27,7 @@ describe('Hero Controller', () => {
     expect(typeof $ctrl).toBe('object');
   });
 
-  it('name is initialized to world', () => {
-    expect($ctrl.name).toBe('world');
+  it('Should should initialize with a noun', () => {
+    expect($ctrl.noun).toEqual('turtles');
   });
 });

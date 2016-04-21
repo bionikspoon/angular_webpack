@@ -1,4 +1,4 @@
-/* eslint default-case:0 */
+/* eslint default-case:0, angular/json-functions:0 */
 require('babel-polyfill');
 
 const _ = require('lodash');
@@ -31,12 +31,12 @@ const PORT = 3000;
 // SETUP ENV
 // ===========================================================================
 const ENV = getEnv(process.env.npm_lifecycle_event);
-const DEBUG = !process.argv.includes('--release');
-const VERBOSE = process.argv.includes('--verbose');
-const WATCH = global.watch || false;
 const IS_DEVELOPMENT = ENV === DEVELOPMENT;
 const IS_PRODUCTION = ENV === PRODUCTION;
-// const IS_TEST = ENV === TEST;
+// const IS_TEST = ENV === test;
+const DEBUG = !process.argv.includes('--release');
+const VERBOSE = process.argv.includes('--verbose');
+const WATCH = IS_DEVELOPMENT || process.argv.includes('--auto-watch');
 
 // ===========================================================================
 // OPTIONS
@@ -114,21 +114,18 @@ function getEntry(env) {
   switch (env) {
     case DEVELOPMENT:
       // enforce order
-      entry.main.push(...Object.keys(require('./package.json').dependencies));
       entry.main.push(PATHS.src('app.bootstrap.js'));
       entry.main.push(`webpack-hot-middleware/client?http://${HOST}:${PORT}`);
       entry.main.push('webpack/hot/only-dev-server');
       break;
 
     case PRODUCTION:
-      entry.vendor.push(PATHS.src('vendor.js'), ...Object.keys(require('./package.json').dependencies));
+      entry.vendor.push(...Object.keys(require('./package.json').dependencies));
 
       entry.main.push(PATHS.src('app.bootstrap.js'));
       break;
 
     case TEST:
-      entry.main.push(...Object.keys(require('./package.json').dependencies));
-      entry.main.push(PATHS.app('app.module.js'));
       break;
   }
 
