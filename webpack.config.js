@@ -31,43 +31,14 @@ const PORT = 3000;
 // SETUP ENV
 // ===========================================================================
 const ENV = getEnv(process.env.npm_lifecycle_event);
-const IS_DEVELOPMENT = ENV === DEVELOPMENT;
-const IS_PRODUCTION = ENV === PRODUCTION;
-// const IS_TEST = ENV === test;
+const ENV_IS = {
+  DEVELOPMENT: ENV === DEVELOPMENT,
+  PRODUCTION: ENV === PRODUCTION,
+  TEST: ENV === TEST,
+};
 const DEBUG = !process.argv.includes('--release');
 const VERBOSE = process.argv.includes('--verbose');
-const WATCH = IS_DEVELOPMENT || process.argv.includes('--auto-watch');
-
-// ===========================================================================
-// OPTIONS
-// ===========================================================================
-const HTML_MINIFY_OPTIONS = {
-  removeComments: true,
-  collapseWhitespace: true,
-  conservativeCollapse: true,
-  collapseInlineTagWhitespace: true,
-  collapseBooleanAttributes: true,
-  removeTagWhitespace: true,
-  removeAttributeQuotes: true,
-  useShortDoctype: true,
-  removeScriptTypeAttributes: true,
-  removeStyleLinkTypeAttributes: true,
-  keepClosingSlash: true,
-  caseSensitive: true,
-};
-
-const STATS_OPTIONS = {
-  colors: true,
-  reasons: DEBUG,
-  hash: VERBOSE,
-  version: VERBOSE,
-  timings: true,
-  chunks: VERBOSE,
-  chunkModules: VERBOSE,
-  cached: VERBOSE,
-  cachedAssets: VERBOSE,
-  children: VERBOSE,
-};
+const WATCH = ENV_IS.DEVELOPMENT || process.argv.includes('--auto-watch');
 
 // ===========================================================================
 // CONFIG EXPORT
@@ -92,15 +63,15 @@ module.exports = {
   plugins: getPlugins(ENV),
 
   resolve: { extensions: [ '', '.js' ] },
-  devtool: IS_PRODUCTION ? 'source-map' : 'inline-source-map',
+  devtool: ENV_IS.PRODUCTION ? 'source-map' : 'inline-source-map',
   postcss: getPostcss,
   cache: DEBUG,
   debug: DEBUG,
   target: 'web',
   progress: true,
-  watch: IS_DEVELOPMENT || WATCH,
+  watch: ENV_IS.DEVELOPMENT || WATCH,
   noInfo: !VERBOSE,
-  stats: STATS_OPTIONS,
+  stats: getStatOptions(),
   PATHS,
 };
 
@@ -165,7 +136,8 @@ function getLoaders(env) {
     { test: /\.js$/, loader: 'babel?cacheDirectory', include: LOADER_INCLUDES },
     {
       test: /\.html$/,
-      loader: `ngtemplate?relativeTo=${PATHS.src()}!html`,
+      // loader: 'file?name=[name].[hash:5].[ext]',
+      loader: `ngtemplate?relativeTo=${PATHS.src()}!html?interpolate`,
       include: LOADER_INCLUDES,
     },
     { test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/, loader: 'file' },
@@ -213,14 +185,13 @@ function getPlugins(env) {
       mobile: true,
       unsupportedBrowser: true,
       appMountDirective: 'app-core',
-      baseHref: IS_PRODUCTION ? '/' : `http://${HOST}:${PORT}/`,
-      minify: DEBUG ? false : HTML_MINIFY_OPTIONS,
+      baseHref: ENV_IS.PRODUCTION ? '/' : `http://${HOST}:${PORT}/`,
+      minify: DEBUG ? false : getHtmlMinifyOptions(),
     }),
 
-    // new webpack.ProvidePlugin({ jQuery: 'jquery' }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(env),
-      __PRODUCTION__: IS_PRODUCTION,
+      __PRODUCTION__: JSON.stringify(ENV_IS.PRODUCTION),
     }),
   ];
 
@@ -238,10 +209,6 @@ function getPlugins(env) {
       plugins.push(
         new ExtractTextPlugin(DEBUG ? 'main.css?[chunkhash]' : 'main.[chunkhash].css')
       );
-      plugins.push(new webpack.optimize.AggressiveMergingPlugin());
-      plugins.push(
-        new webpack.optimize.CommonsChunkPlugin({ names: [ 'vendor', 'manifest' ] })
-      );
       // // create chunks for pages
       // plugins.push(
       //   new webpack.optimize.CommonsChunkPlugin({
@@ -250,6 +217,10 @@ function getPlugins(env) {
       //     ],
       //   })
       // );
+      plugins.push(new webpack.optimize.AggressiveMergingPlugin());
+      plugins.push(
+        new webpack.optimize.CommonsChunkPlugin({ names: [ 'vendor', 'manifest' ] })
+      );
       plugins.push(new webpack.optimize.DedupePlugin());
       break;
 
@@ -268,11 +239,43 @@ function getPostcss(bundler) {
   ];
 }
 
+function getHtmlMinifyOptions() {
+  return {
+    removeComments: true,
+    collapseWhitespace: true,
+    conservativeCollapse: true,
+    collapseInlineTagWhitespace: true,
+    collapseBooleanAttributes: true,
+    removeTagWhitespace: true,
+    removeAttributeQuotes: true,
+    useShortDoctype: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    keepClosingSlash: true,
+    caseSensitive: true,
+  };
+}
+
+function getStatOptions() {
+  return {
+    colors: true,
+    reasons: DEBUG,
+    hash: VERBOSE,
+    version: VERBOSE,
+    timings: true,
+    chunks: VERBOSE,
+    chunkModules: VERBOSE,
+    cached: VERBOSE,
+    cachedAssets: VERBOSE,
+    children: VERBOSE,
+  };
+}
+
 // ===========================================================================
 // UTILS
 // ===========================================================================
 function getEnv(target) {
-  if (global.test === true) {return TEST;}
+  if (global.test === true) { return TEST; }
 
   switch (target) {
     case 'test':

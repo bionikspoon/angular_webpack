@@ -4,4 +4,10 @@ import appFocus from '../../components/focus';
 
 export default angular
   .module('app.page.home', [ appHero.name, appFocus.name ])
-  .component('appPageHome', { templateUrl: require('./home.html') });
+  .config(routeConfig);
+
+/* @ngInject */
+function routeConfig($stateProvider) {
+  $stateProvider
+    .state('home', { url: '/', templateUrl: require('./home.html') });
+}

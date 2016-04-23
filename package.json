@@ -30,9 +30,7 @@
     "angular": "1.5.5",
     "angular-animate": "1.5.5",
     "angular-touch": "1.5.5",
-    "angular-ui-router": "0.2.18",
-    "eslint-config-airbnb-base": "1.0.3",
-    "eslint-plugin-import": "1.5.0"
+    "angular-ui-router": "0.2.18"
   },
   "devDependencies": {
     "angular-mocks": "1.5.5",
@@ -51,9 +49,11 @@
     "browser-sync": "2.12.3",
     "css-loader": "0.23.1",
     "eslint": "2.8.0",
+    "eslint-config-airbnb-base": "1.0.3",
     "eslint-config-angular": "0.5.0",
     "eslint-loader": "1.3.0",
     "eslint-plugin-angular": "1.0.0",
+    "eslint-plugin-import": "1.5.0",
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.8.5",
     "fs-extra": "0.28.0",
